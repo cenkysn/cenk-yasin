@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CENK YAŞIN | Elektrik-Elektronik Mühendisi</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            bordo: {
+              950: '#2d0612',
+              900: '#4c0519',
+              800: '#700824',
+              700: '#881337',
+              600: '#9f1239',
+              500: '#be123c',
+              400: '#e11d48',
+              300: '#fb7185',
+            },
+            lacivert: {
+              950: '#040914',
+              900: '#071124',
+              800: '#0b1933',
+              700: '#102447',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Sayfa Zemin Izgarası ve RF/Devre Dokusu */
+    .rf-grid-bg {
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, rgba(7, 17, 36, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(7, 17, 36, 0.05) 1px, transparent 1px);
+    }
+    html.dark .rf-grid-bg {
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    }
+
+    /* Kaydırma Çubuğu Özelleştirme */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(136, 19, 55, 0.35);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(136, 19, 55, 0.6);
+    }
+
+    /* Kod Bloğu Stil İyileştirmeleri */
+    .code-pre {
+      tab-size: 4;
+      -moz-tab-size: 4;
+    }
+
+    /* Modal Yumuşak (Smooth) Açılış ve Kapanış Animasyonları */
+    #project-modal {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: visibility 0s linear 0.42s, opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #project-modal.is-open {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transition: visibility 0s linear 0s, opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #project-modal-backdrop {
+      opacity: 0;
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.42s cubic-bezier(0.16, 1, 0.3, 1), -webkit-backdrop-filter 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #project-modal.is-open #project-modal-backdrop {
+      opacity: 1;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    #project-modal-dialog {
+      opacity: 0;
+      transform: translateY(32px) scale(0.95);
+      transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1), transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+    #project-modal.is-open #project-modal-dialog {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Modal İçindeki Madde Blokları İçin Kademeli (Staggered Fade-Up) Geçiş */
+    .modal-stagger-item {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #project-modal.is-open .modal-stagger-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #project-modal.is-open .modal-stagger-item:nth-child(1) { transition-delay: 0.06s; }
+    #project-modal.is-open .modal-stagger-item:nth-child(2) { transition-delay: 0.11s; }
+    #project-modal.is-open .modal-stagger-item:nth-child(3) { transition-delay: 0.16s; }
+    #project-modal.is-open .modal-stagger-item:nth-child(4) { transition-delay: 0.21s; }
+    #project-modal.is-open .modal-stagger-item:nth-child(5) { transition-delay: 0.26s; }
+    #project-modal.is-open .modal-stagger-item:nth-child(6) { transition-delay: 0.31s; }
+
+    /* Yazdırma / PDF Çıktısı Kuralları (@media print) */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 14mm;
+      }
+      body {
+        background: #ffffff !important;
+        color: #071124 !important;
+        font-size: 10pt !important;
+        line-height: 1.45 !important;
+      }
+      .no-print,
+      #project-modal,
+      #toast-container {
+        display: none !important;
+      }
+      #print-cv-sheet {
+        display: block !important;
+      }
+      .print-break-inside-avoid {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-white text-lacivert-900 dark:bg-lacivert-950 dark:text-white antialiased selection:bg-bordo-700 selection:text-white transition-colors duration-300">
+  <!-- Arka Plan Izgara ve Yumuşak Bordo/Lacivert Işık Katmanı -->
+  <div class="fixed inset-0 rf-grid-bg pointer-events-none z-0 no-print"></div>
+  <div class="fixed -top-40 -right-40 w-[520px] h-[520px] rounded-full bg-bordo-700/10 dark:bg-bordo-700/15 blur-3xl pointer-events-none z-0 no-print"></div>
+  <div class="fixed bottom-0 -left-40 w-[480px] h-[480px] rounded-full bg-lacivert-800/10 dark:bg-lacivert-700/20 blur-3xl pointer-events-none z-0 no-print"></div>
+
+  <!-- EKRAN GÖRÜNÜMÜ ANA KAPSAYICI -->
+  <div id="screen-content" class="relative z-10 no-print">
+
+    <!-- HERO / ÜST PROFİL BÖLÜMÜ -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Sol Ana Profil Alanı -->
+        <div class="lg:col-span-8 space-y-5">
+          <!-- Üniversite & Bölüm Rozeti ve Özgeçmiş İndir Butonu -->
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-bordo-700/10 dark:bg-bordo-900/50 border border-bordo-700/30 dark:border-bordo-500/40 text-bordo-700 dark:text-bordo-300 text-xs font-mono font-medium">
+              <span class="w-2 h-2 rounded-full bg-bordo-600 dark:bg-bordo-400"></span>
+              TOBB Ekonomi ve Teknoloji Üniversitesi - Elektrik Elektronik Mühendisi
+            </div>
+
+            <button
+              type="button"
+              onclick="downloadResumePDF()"
+              class="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full bg-bordo-700/10 dark:bg-bordo-900/50 border border-bordo-700/30 dark:border-bordo-500/40 text-bordo-700 dark:text-bordo-300 hover:bg-bordo-700 hover:text-white dark:hover:bg-bordo-600 dark:hover:text-white text-xs font-mono font-medium transition-all duration-200 cursor-pointer"
+              title="Özgeçmişi PDF olarak indir"
+            >
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Özgeçmiş İndir</span>
+            </button>
+          </div>
+
+          <!-- İsim Başlığı -->
+          <div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-bordo-700 dark:text-bordo-400">
+              CENK YAŞIN
+            </h1>
+          </div>
+
+          <!-- Mühendislik Özeti Paragrafı -->
+          <p class="w-full text-base sm:text-lg text-lacivert-900 dark:text-slate-300 leading-relaxed font-normal">
+            Haberleşme, gömülü sistemler, üretim ve kontrol alanlarında teorik ve pratik tecrübe edinmiş, yeni teknolojilere hızla uyum sağlayabilen bir mühendisim. Teknik birikimimi ve merakımı, yenilikçi projelerde çözüm üretmek için kullanmayı hedefliyorum.
+          </p>
+
+          <!-- İletişim Baloncukları -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+            <div class="px-3.5 py-2.5 rounded-xl bg-lacivert-900 dark:bg-lacivert-800 border border-lacivert-700/40 text-white text-xs sm:text-sm font-mono font-medium text-center truncate">
+              cenk.yasin20@gmail.com
+            </div>
+
+            <div class="px-3.5 py-2.5 rounded-xl bg-lacivert-900 dark:bg-lacivert-800 border border-lacivert-700/40 text-white text-xs sm:text-sm font-mono font-medium text-center truncate">
+              +90 507 867 0612
+            </div>
+
+            <a
+              href="https://www.linkedin.com/in/cenkyaşın"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-3.5 py-2.5 rounded-xl bg-lacivert-900 dark:bg-lacivert-800 border border-lacivert-700/40 hover:border-bordo-500/60 text-white text-xs sm:text-sm font-mono font-medium text-center truncate transition-colors"
+            >
+              linkedin.com/in/cenkyaşın
+            </a>
+
+            <div class="px-3.5 py-2.5 rounded-xl bg-lacivert-900 dark:bg-lacivert-800 border border-lacivert-700/40 text-white text-xs sm:text-sm font-mono font-medium text-center truncate">
+              Ankara / TÜRKİYE
+            </div>
+          </div>
+        </div>
+
+        <!-- Sağ Özet Kartı -->
+        <div class="lg:col-span-4">
+          <div class="p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/90 border border-slate-200 dark:border-lacivert-700/60 shadow-xl space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-lacivert-800 pb-3.5">
+              <div>
+                <h2 class="text-xl font-bold font-sans text-bordo-700 dark:text-bordo-400">
+                  Mühendislik Profili
+                </h2>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-bordo-700/15 dark:bg-bordo-900/60 border border-bordo-700/30 flex items-center justify-center text-bordo-700 dark:text-bordo-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Özet Metrikler -->
+            <div class="grid grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-xl bg-white dark:bg-lacivert-950/80 border border-slate-200/80 dark:border-lacivert-800">
+                <div class="text-2xl font-bold font-mono text-bordo-700 dark:text-bordo-400">4</div>
+                <div class="text-sm font-medium text-lacivert-900 dark:text-white mt-0.5">İş &amp; Lab. Deneyimi</div>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white dark:bg-lacivert-950/80 border border-slate-200/80 dark:border-lacivert-800">
+                <div class="text-2xl font-bold font-mono text-bordo-700 dark:text-bordo-400">5</div>
+                <div class="text-sm font-medium text-lacivert-900 dark:text-white mt-0.5">Mühendislik Projesi</div>
+              </div>
+              <div class="col-span-2 p-3.5 rounded-xl bg-white dark:bg-lacivert-950/80 border border-slate-200/80 dark:border-lacivert-800">
+                <div class="text-2xl font-bold font-mono text-bordo-700 dark:text-bordo-400">4</div>
+                <div class="text-sm font-medium text-lacivert-900 dark:text-white mt-0.5">Açık Kaynak Proje Kodu</div>
+              </div>
+            </div>
+
+            <!-- Kişisel & Akademik Bilgiler -->
+            <div class="space-y-2.5 text-xs sm:text-sm pt-1 border-t border-slate-200 dark:border-lacivert-800">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-slate-600 dark:text-slate-400">Üniversite:</span>
+                <span class="font-mono font-semibold text-lacivert-900 dark:text-slate-100">TOBB ETÜ (09.2020 - 01.2026)</span>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-slate-600 dark:text-slate-400">Yabancı Dil:</span>
+                <span class="font-mono font-semibold text-lacivert-900 dark:text-slate-100">TOEIC L&amp;R: 780</span>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-slate-600 dark:text-slate-400">Askerlik Durumu:</span>
+                <span class="font-mono font-semibold text-lacivert-900 dark:text-slate-100">Tecilli (20.01.2028)</span>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-slate-600 dark:text-slate-400">Sürücü Belgesi:</span>
+                <span class="font-mono font-semibold text-lacivert-900 dark:text-slate-100">B Sınıfı</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ANA İÇERİK BÖLÜMLERİ -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 pb-20">
+
+      <!-- 1. TEKNİK YETKİNLİKLER -->
+      <section id="skills" class="scroll-mt-8">
+        <div class="mb-6">
+          <h2 class="text-2xl sm:text-3xl font-bold font-sans text-bordo-700 dark:text-bordo-400">
+            Teknik Yetkinlikler
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Programlama & Gömülü Sistemler -->
+          <div class="p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-bordo-700/15 dark:bg-bordo-900/60 border border-bordo-700/30 flex items-center justify-center text-bordo-700 dark:text-bordo-300 font-mono text-sm font-bold">
+                &lt;/&gt;
+              </div>
+              <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">Programlama &amp; Gömülü Sistemler</h3>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">Python</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">C / C++</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">MATLAB</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">STM32CubeIDE</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">Arduino IDE</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">Raspberry Pi</span>
+            </div>
+          </div>
+
+          <!-- Devre Simülasyonu & PCB Tasarımı -->
+          <div class="p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-bordo-700/15 dark:bg-bordo-900/60 border border-bordo-700/30 flex items-center justify-center text-bordo-700 dark:text-bordo-300 font-mono text-sm font-bold">
+                PCB
+              </div>
+              <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">Devre Simülasyonu &amp; PCB Tasarımı</h3>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">KiCad EDA</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">LTspice / PSpice</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">Ansys HFSS</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">SMD Dizgi &amp; Üretim</span>
+            </div>
+          </div>
+
+          <!-- RF, Uydu Haberleşme & Ölçüm -->
+          <div class="p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-bordo-700/15 dark:bg-bordo-900/60 border border-bordo-700/30 flex items-center justify-center text-bordo-700 dark:text-bordo-300 font-mono text-sm font-bold">
+                RF
+              </div>
+              <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">RF, Uydu Haberleşme &amp; Ölçüm</h3>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">RF Spektrum Analizör</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">RTL-SDR (YTR)</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">DVB-S / DVB-S2</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">Link Bütçesi</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">Yagi &amp; Mikroşerit</span>
+            </div>
+          </div>
+
+          <!-- Kontrol, Test & Dokümantasyon -->
+          <div class="p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-bordo-700/15 dark:bg-bordo-900/60 border border-bordo-700/30 flex items-center justify-center text-bordo-700 dark:text-bordo-300 font-mono text-sm font-bold">
+                LAB
+              </div>
+              <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">Kontrol, Test &amp; Dokümantasyon</h3>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">PID / On-Off Kontrol</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">Çevre Koşul Testleri</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">Analog Discovery 2</span>
+              <span class="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-bordo-800/10 dark:bg-bordo-900/40 text-bordo-800 dark:text-bordo-300 border border-bordo-800/25 dark:border-bordo-500/40">MS Office &amp; Raporlama</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. EĞİTİM BİLGİLERİ -->
+      <section id="education" class="scroll-mt-8">
+        <div class="mb-6">
+          <h2 class="text-2xl sm:text-3xl font-bold font-sans text-bordo-700 dark:text-bordo-400">
+            Eğitim Bilgileri
+          </h2>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800 space-y-3">
+          <div class="flex items-center justify-end gap-3">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-medium whitespace-nowrap shrink-0 bg-bordo-700/15 dark:bg-bordo-900/60 text-bordo-700 dark:text-bordo-300 border border-bordo-700/35 dark:border-bordo-500/40">
+              09.2020 - 01.2026
+            </span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">TOBB Ekonomi ve Teknoloji Üniversitesi — Ankara / TÜRKİYE</h3>
+            <p class="text-sm font-medium text-bordo-700 dark:text-bordo-400 mt-0.5">Lisans · Elektrik Elektronik Mühendisliği - GANO: 2.76</p>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Ortak eğitim modeli kapsamında haberleşme, uydu sistemleri, savunma ve gömülü sistemler alanlarında uzun dönemli mühendislik stajları ve yardımcı ders asistanlığı görevleri yürüttüm. Seçmeli dersler kapsamında ELE 423 (Endüstriyel Elektronik), ELE 562 (Uydu Haberleşme Sistemleri), ELE 563 (Haberleşme Ağları), ELE 569 (İletişim Ağı Eniyilemesi), ELE 596 (Elektrik Mühendisliğine Özel Konular) ve dinleyici olarak ELE 565 (Radar Sinyal İşlemenin Temelleri) derslerini aldım.
+          </p>
+        </div>
+      </section>
+
+      <!-- 3. STAJ DENEYİMLERİ -->
+      <section id="experience" class="scroll-mt-8">
+        <div class="mb-6">
+          <h2 class="text-2xl sm:text-3xl font-bold font-sans text-bordo-700 dark:text-bordo-400">
+            Staj Deneyimleri
+          </h2>
+        </div>
+
+        <div class="relative pl-6 sm:pl-8 border-l-2 border-bordo-700/35 dark:border-bordo-500/35 space-y-6">
+          <!-- 1. Yardımcı Ders Asistanlığı - TOBB Ekonomi ve Teknoloji Üniversitesi -->
+          <div class="relative p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800">
+            <span class="absolute -left-[33px] sm:-left-[41px] top-7 w-4 h-4 rounded-full bg-bordo-600 dark:bg-bordo-400 ring-4 ring-white dark:ring-lacivert-950"></span>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+              <div>
+                <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">Yardımcı Ders Asistanlığı</h3>
+                <p class="text-sm font-semibold text-bordo-700 dark:text-bordo-400">TOBB Ekonomi ve Teknoloji Üniversitesi</p>
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium whitespace-nowrap shrink-0 self-start sm:self-auto bg-bordo-700/15 dark:bg-bordo-900/60 text-bordo-700 dark:text-bordo-300 border border-bordo-700/35 dark:border-bordo-500/40">
+                15/09/2025 - 22/12/2025
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+              Haberleşme Sistemleri ve Kontrol Sistemleri laboratuvar derslerinde görev alındı. Görevler kapsamında haftalık yapılacak deneylerin düzeneklerinin hazırlanması, kısa sınav yapılması ve yapılacak deneyin anlatımı gerçekleştirildi.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Haberleşme Sistemleri Lab.</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Kontrol Sistemleri Lab.</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Deney Düzeneği &amp; Anlatım</span>
+            </div>
+          </div>
+
+          <!-- 2. Uzun Dönem Uydu Haberleşme Sistemleri Stajyer Mühendis - TÜRKSAT A.Ş. -->
+          <div class="relative p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800">
+            <span class="absolute -left-[33px] sm:-left-[41px] top-7 w-4 h-4 rounded-full bg-bordo-600 dark:bg-bordo-400 ring-4 ring-white dark:ring-lacivert-950"></span>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+              <div>
+                <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">Uzun Dönem Uydu Haberleşme Sistemleri Stajyer Mühendis</h3>
+                <p class="text-sm font-semibold text-bordo-700 dark:text-bordo-400">TÜRKSAT A.Ş.</p>
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium whitespace-nowrap shrink-0 self-start sm:self-auto bg-bordo-700/15 dark:bg-bordo-900/60 text-bordo-700 dark:text-bordo-300 border border-bordo-700/35 dark:border-bordo-500/40">
+                05/05/2025 - 11/09/2025
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+              Uydu haberleşme prensipleri, anten sistemleri, modülasyon teknikleri ve yer istasyonu donanımları üzerine teknik bilgiler edinildi. Uydu görev sınıflandırmaları, frekans bantları, yörüngeler, yörünge manevraları, DVB-S/S2 protokolleri, yazılım tabanlı uydular ve uydu izleme algoritmaları üzerine teknik araştırmalar yapıldı ve sunuldu. RF spektrum/taşıyıcı analizör üzerinde pratik yetkinlik kazanıldı ve MATLAB ortamında uydu Link Bütçe hesabı kodu yazıldı.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Uydu Haberleşme</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">RF Spektrum/Taşıyıcı Analizör</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Link Budget</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Track</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Yer İstasyonu &amp; Anten Sistemleri</span>
+            </div>
+          </div>
+
+          <!-- 3. Uzun Dönem ÜR-GE ve Test Stajyer Mühendis - Armas Elektronik -->
+          <div class="relative p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800">
+            <span class="absolute -left-[33px] sm:-left-[41px] top-7 w-4 h-4 rounded-full bg-bordo-600 dark:bg-bordo-400 ring-4 ring-white dark:ring-lacivert-950"></span>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+              <div>
+                <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">Uzun Dönem ÜR-GE ve Test Stajyer Mühendis</h3>
+                <p class="text-sm font-semibold text-bordo-700 dark:text-bordo-400">Armas Elektronik</p>
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium whitespace-nowrap shrink-0 self-start sm:self-auto bg-bordo-700/15 dark:bg-bordo-900/60 text-bordo-700 dark:text-bordo-300 border border-bordo-700/35 dark:border-bordo-500/40">
+                27/05/2024 - 06/09/2024
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+              Alkolmetre, uyuşturucu test cihazları ve RF modüllerinin donanım/yazılım testleri gerçekleştirilerek arayüz ve fonksiyon hataları raporlandı. Işıklı ikaz ve siren sistemlerine çevre koşul testleri (sıcaklık, nem, korozyon, titreşim, düşme testleri) uygulandı; SMD dizgi makinesi eğitimleri alındı ve üretim süreçlerine aktif katılım sağlandı.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">RF Modül Testi</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Donanım/Yazılım Testleri</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Çevre Koşul Testleri</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">SMD Dizgi &amp; Üretim</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Hata Raporlama</span>
+            </div>
+          </div>
+
+          <!-- 4. Uzun Dönem Gömülü Sistemler Stajyer Mühendis - Teknopar A.Ş. -->
+          <div class="relative p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800">
+            <span class="absolute -left-[33px] sm:-left-[41px] top-7 w-4 h-4 rounded-full bg-bordo-600 dark:bg-bordo-400 ring-4 ring-white dark:ring-lacivert-950"></span>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+              <div>
+                <h3 class="text-lg font-bold font-sans text-lacivert-900 dark:text-white">Uzun Dönem Gömülü Sistemler Stajyer Mühendis</h3>
+                <p class="text-sm font-semibold text-bordo-700 dark:text-bordo-400">Teknopar A.Ş.</p>
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium whitespace-nowrap shrink-0 self-start sm:self-auto bg-bordo-700/15 dark:bg-bordo-900/60 text-bordo-700 dark:text-bordo-300 border border-bordo-700/35 dark:border-bordo-500/40">
+                15/05/2023 - 24/08/2023
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+              Arduino tabanlı kablosuz sensör ağları ve web arayüzlü lehim kontrol sistemi tasarlanarak sıcaklık sensörü ile gerçek zamanlı sıcaklık ölçümü yapıldı ve üretim ortamında test edildi. KiCad EDA ile 830M1 ivmeölçer ve DI-188 USB veri toplama aracı kartı tasarlandı ve bastırıldı.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Kablosuz Sensör Ağları</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">Lehim Kontrol Sistemi</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">KiCad EDA PCB</span>
+              <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200 border border-slate-200 dark:border-lacivert-700">830M1 &amp; DI-188</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. PROJELER VE TEKNİK ÇALIŞMALAR -->
+      <section id="projects" class="scroll-mt-8">
+        <div class="mb-6">
+          <h2 class="text-2xl sm:text-3xl font-bold font-sans text-bordo-700 dark:text-bordo-400">
+            Projeler ve Teknik Çalışmalar
+          </h2>
+        </div>
+
+        <!-- Kategori Filtreleri ve Arama Çubuğu -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
+          <div id="category-filters" class="flex flex-wrap gap-2">
+            <button data-filter="all" class="filter-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-medium transition-all bg-bordo-700 text-white shadow-md cursor-pointer">
+              Tümü (5)
+            </button>
+            <button data-filter="rf" class="filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-medium transition-all bg-slate-100 dark:bg-lacivert-900 text-lacivert-900 dark:text-slate-300 border border-slate-200 dark:border-lacivert-800 hover:border-bordo-500 cursor-pointer">
+              RF &amp; Haberleşme (2)
+            </button>
+            <button data-filter="embedded" class="filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-medium transition-all bg-slate-100 dark:bg-lacivert-900 text-lacivert-900 dark:text-slate-300 border border-slate-200 dark:border-lacivert-800 hover:border-bordo-500 cursor-pointer">
+              Gömülü Sistemler &amp; Kontrol (2)
+            </button>
+            <button data-filter="dsp" class="filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-medium transition-all bg-slate-100 dark:bg-lacivert-900 text-lacivert-900 dark:text-slate-300 border border-slate-200 dark:border-lacivert-800 hover:border-bordo-500 cursor-pointer">
+              Sinyal İşleme (1)
+            </button>
+          </div>
+
+          <div class="relative w-full lg:w-72">
+            <input
+              id="project-search"
+              type="text"
+              placeholder="Proje, ders kodu, araç ara..."
+              class="w-full pl-9 pr-4 py-2 rounded-xl text-sm bg-slate-100 dark:bg-lacivert-900 text-lacivert-900 dark:text-white placeholder-slate-400 border border-slate-200 dark:border-lacivert-800 focus:outline-none focus:border-bordo-500"
+            />
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Proje Kartları Grid -->
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- Sonuç Bulunamadı Mesajı -->
+        <div id="no-projects-msg" class="hidden text-center py-12 px-6 rounded-2xl bg-slate-50 dark:bg-lacivert-900/70 border border-slate-200 dark:border-lacivert-800">
+          <p class="text-slate-600 dark:text-slate-300 font-medium">Arama veya kategori filtresiyle eşleşen proje bulunamadı.</p>
+          <button onclick="resetProjectFilters()" class="mt-3 px-4 py-2 rounded-xl text-xs font-mono bg-bordo-700 text-white hover:bg-bordo-600 transition-colors cursor-pointer">
+            Filtreleri Sıfırla
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ALT BİLGİ -->
+    <footer class="border-t border-slate-200 dark:border-lacivert-800 bg-slate-50/70 dark:bg-lacivert-950/90 py-8 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+        <div class="font-mono">
+          <span class="font-bold text-bordo-700 dark:text-bordo-400">CENK YAŞIN</span> · Elektrik - Elektronik Mühendisi · Ankara
+        </div>
+        <div class="font-mono text-xs">
+          RF · Haberleşme · Gömülü Sistemler · PCB &amp; Kontrol
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- PROJE DETAY & KAYNAK KODU MODALI -->
+  <div id="project-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="project-modal-backdrop" class="fixed inset-0 bg-lacivert-950/75" onclick="closeProjectModal()"></div>
+
+    <div id="project-modal-dialog" class="relative z-10 w-full max-w-4xl max-h-[90vh] flex flex-col rounded-2xl bg-white dark:bg-lacivert-900 border border-slate-200 dark:border-lacivert-700 shadow-2xl overflow-hidden">
+      <!-- Modal Üst Başlık -->
+      <div class="flex items-start justify-between gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-lacivert-800 bg-slate-50/80 dark:bg-lacivert-950/60">
+        <div class="space-y-1.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="modal-code-badge" class="px-2.5 py-0.5 rounded-md text-xs font-mono font-semibold bg-bordo-700/15 dark:bg-bordo-900/70 text-bordo-700 dark:text-bordo-300 border border-bordo-700/30"></span>
+            <span id="modal-category-badge" class="px-2.5 py-0.5 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-300"></span>
+          </div>
+          <h3 id="modal-title" class="text-xl sm:text-2xl font-bold font-sans text-lacivert-900 dark:text-white"></h3>
+          <p id="modal-subtitle" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300"></p>
+        </div>
+
+        <button
+          onclick="closeProjectModal()"
+          aria-label="Pencereyi Kapat"
+          class="p-2 rounded-xl text-slate-500 hover:text-bordo-700 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-lacivert-800 transition-colors shrink-0 cursor-pointer"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sekme Çubuğu (Kod içeren projelerde görünür) -->
+      <div id="modal-tabs" class="hidden px-5 sm:px-6 pt-3 border-b border-slate-200 dark:border-lacivert-800 bg-slate-50/40 dark:bg-lacivert-950/30 flex items-center gap-2">
+        <button id="tab-details-btn" onclick="switchModalTab('details')" class="px-4 py-2 text-xs sm:text-sm font-mono font-semibold rounded-t-lg border-b-2 border-bordo-600 text-bordo-700 dark:text-bordo-400 cursor-pointer">
+          Proje Detayları (Madde Madde)
+        </button>
+        <button id="tab-code-btn" onclick="switchModalTab('code')" class="px-4 py-2 text-xs sm:text-sm font-mono font-medium rounded-t-lg border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-lacivert-900 dark:hover:text-white cursor-pointer">
+          Kaynak Kodu (<span id="modal-code-filename"></span>)
+        </button>
+      </div>
+
+      <!-- Modal İçerik Alanı -->
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1">
+        <!-- Detaylar Sekmesi -->
+        <div id="modal-details-panel" class="space-y-3.5"></div>
+
+        <!-- Kaynak Kodu Sekmesi -->
+        <div id="modal-code-panel" class="hidden space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-lacivert-950 text-slate-200 border border-lacivert-800">
+            <div class="flex items-center gap-2 text-xs font-mono">
+              <span class="w-2.5 h-2.5 rounded-full bg-bordo-500"></span>
+              <span id="code-header-filename" class="font-semibold text-white"></span>
+              <span id="code-header-lang" class="text-slate-400"></span>
+            </div>
+            <button
+              onclick="copyProjectCode()"
+              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono bg-bordo-700 hover:bg-bordo-600 text-white transition-colors cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span>Kodu Kopyala</span>
+            </button>
+          </div>
+
+          <div class="rounded-xl bg-lacivert-950 border border-lacivert-800 overflow-x-auto">
+            <pre id="modal-code-pre" class="code-pre p-4 text-xs sm:text-[13px] leading-relaxed font-mono text-slate-100"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Alt Buton Çubuğu -->
+      <div class="flex items-center justify-between gap-3 px-5 sm:px-6 py-3.5 border-t border-slate-200 dark:border-lacivert-800 bg-slate-50/80 dark:bg-lacivert-950/60">
+        <span class="text-xs font-mono text-slate-500 dark:text-slate-400">ESC tuşu veya dış alana tıklayarak kapatabilirsiniz</span>
+        <button
+          onclick="closeProjectModal()"
+          class="px-4 py-2 rounded-xl text-xs sm:text-sm font-mono font-medium bg-lacivert-900 dark:bg-lacivert-800 hover:bg-bordo-700 text-white transition-colors cursor-pointer"
+        >
+          Kapat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- YAZDIRILABİLİR KURUMSAL A4 CV ŞABLONU -->
+  <div id="print-cv-sheet" class="hidden">
+    <div style="border-bottom: 2px solid #881337; padding-bottom: 10px; margin-bottom: 12px;">
+      <div style="font-size: 20pt; font-weight: 800; color: #881337; letter-spacing: 0.5px;">CENK YAŞIN</div>
+      <div style="font-size: 10.5pt; font-weight: 600; color: #071124; margin-top: 2px;">
+        TOBB Ekonomi ve Teknoloji Üniversitesi - Elektrik Elektronik Mühendisi
+      </div>
+      <div style="font-size: 8.8pt; color: #334155; margin-top: 4px;">
+        E-posta: cenk.yasin20@gmail.com &nbsp;|&nbsp; Tel: +90 507 867 0612 &nbsp;|&nbsp; LinkedIn: linkedin.com/in/cenkyaşın &nbsp;|&nbsp; Konum: Ankara / TÜRKİYE
+      </div>
+    </div>
+
+    <div class="print-break-inside-avoid" style="margin-bottom: 12px;">
+      <div style="font-size: 10.5pt; font-weight: 700; color: #881337; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; margin-bottom: 6px;">
+        Mühendislik Profili &amp; Kişisel Bilgiler
+      </div>
+      <p style="font-size: 9.2pt; color: #071124; margin: 0 0 6px 0;">
+        Haberleşme, gömülü sistemler, üretim ve kontrol alanlarında teorik ve pratik tecrübe edinmiş, yeni teknolojilere hızla uyum sağlayabilen bir mühendisim. Teknik birikimimi ve merakımı, yenilikçi projelerde çözüm üretmek için kullanmayı hedefliyorum.
+      </p>
+      <div style="font-size: 8.8pt; color: #071124;">
+        <strong>Üniversite:</strong> TOBB ETÜ (09.2020 - 01.2026) &nbsp;|&nbsp;
+        <strong>Yabancı Dil:</strong> İngilizce B2 (TOEFL ITP: 507 · TOEIC L&amp;R: 780) &nbsp;|&nbsp;
+        <strong>Askerlik:</strong> Tecilli (20.01.2028) &nbsp;|&nbsp;
+        <strong>Ehliyet:</strong> B Sınıfı
+      </div>
+    </div>
+
+    <div class="print-break-inside-avoid" style="margin-bottom: 12px;">
+      <div style="font-size: 10.5pt; font-weight: 700; color: #881337; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; margin-bottom: 6px;">
+        Eğitim Bilgileri
+      </div>
+      <div style="font-size: 9.2pt; color: #071124;">
+        <strong>Lisans — TOBB Ekonomi ve Teknoloji Üniversitesi - Ankara / TÜRKİYE</strong> · Elektrik Elektronik Mühendisliği - GANO: 2.76 <em>(09.2020 - 01.2026)</em>
+      </div>
+    </div>
+
+    <div class="print-break-inside-avoid" style="margin-bottom: 12px;">
+      <div style="font-size: 10.5pt; font-weight: 700; color: #881337; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; margin-bottom: 6px;">
+        Staj &amp; Asistanlık Deneyimleri
+      </div>
+      <div style="font-size: 9pt; color: #071124;">
+        <div style="margin-bottom: 6px;">
+          <strong>Yardımcı Ders Asistanlığı — TOBB Ekonomi ve Teknoloji Üniversitesi</strong> <em>(15/09/2025 - 22/12/2025)</em><br />
+          Haberleşme Sistemleri ve Kontrol Sistemleri laboratuvar derslerinde haftalık deney düzeneklerinin hazırlanması, kısa sınav yapılması ve deney anlatımı.
+        </div>
+        <div style="margin-bottom: 6px;">
+          <strong>Uzun Dönem Uydu Haberleşme Sistemleri Stajyer Mühendis — TÜRKSAT A.Ş.</strong> <em>(05/05/2025 - 11/09/2025)</em><br />
+          Uydu haberleşme prensipleri, anten sistemleri, modülasyon teknikleri, yer istasyonu donanımları, yörünge manevraları, DVB-S/S2 protokolleri, yazılım tabanlı uydular ve uydu izleme algoritmaları üzerine araştırmalar/sunumlar; RF spektrum/taşıyıcı analizör kullanımı; MATLAB ortamında uydu Link Bütçe hesabı kodu yazımı.
+        </div>
+        <div style="margin-bottom: 6px;">
+          <strong>Uzun Dönem ÜR-GE ve Test Stajyer Mühendis — Armas Elektronik</strong> <em>(27/05/2024 - 06/09/2024)</em><br />
+          Alkolmetre, uyuşturucu test cihazları ve RF modüllerinin donanım/yazılım testleri ve hata raporlaması; ışıklı ikaz ve siren sistemlerine çevre koşul testleri (sıcaklık, nem, korozyon, titreşim, düşme testleri); SMD dizgi makinesi eğitimleri ve üretim süreçleri.
+        </div>
+        <div>
+          <strong>Uzun Dönem Gömülü Sistemler Stajyer Mühendis — Teknopar A.Ş.</strong> <em>(15/05/2023 - 24/08/2023)</em><br />
+          Arduino tabanlı kablosuz sensör ağları ve web arayüzlü lehim kontrol sistemi tasarımı, sıcaklık sensörü ile gerçek zamanlı sıcaklık ölçümü ve üretim ortamında test; KiCad EDA ile 830M1 ivmeölçer ve DI-188 USB veri toplama aracı kartı tasarımı ve baskısı.
+        </div>
+      </div>
+    </div>
+
+    <div class="print-break-inside-avoid" style="margin-bottom: 12px;">
+      <div style="font-size: 10.5pt; font-weight: 700; color: #881337; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; margin-bottom: 6px;">
+        Teknik Yetkinlikler &amp; Seçmeli Dersler
+      </div>
+      <div style="font-size: 8.8pt; line-height: 1.5; color: #071124;">
+        <div><strong>Yazılımlar / Araçlar:</strong> STM32CubeIDE, MATLAB, C/C++, LTspice / PSpice, Ansys HFSS, KiCad EDA</div>
+        <div><strong>Seçmeli Dersler:</strong> ELE 423 - Endüstriyel Elektronik, ELE 562 - Uydu Haberleşme Sistemleri, ELE 563 - Haberleşme Ağları, ELE 569 - İletişim Ağı Eniyilemesi, ELE 596 - Elektrik Mühendisliğine Özel Konular, ELE 565 - Radar Sinyal İşlemenin Temelleri (Dinleyici)</div>
+      </div>
+    </div>
+
+    <div class="print-break-inside-avoid">
+      <div style="font-size: 10.5pt; font-weight: 700; color: #881337; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; margin-bottom: 6px;">
+        Projeler
+      </div>
+      <ul style="font-size: 8.8pt; line-height: 1.45; color: #071124; margin: 0; padding-left: 16px;">
+        <li><strong>Bitirme Tasarım Projesi:</strong> Raspberry Pi ve MPU6050 ivme sensörü ile otonom aracın gerçek zamanlı spektrum analizi yaparak 433 MHz vericiyi takip etmesi ve iki dakikadan kısa sürede hedefe ulaşması; Yagi anten tasarımı, üretimi ve RTL-SDR bağlantıları.</li>
+        <li><strong>Ders Projesi - Mikroşerit Çeyrek Dalga Empedans Dönüştürücü:</strong> 1 GHz frekansında 100&#937; - 50&#937; uyumu için mikroşerit çeyrek dalga empedans dönüştürücü tasarımı ve Ansys HFSS ile S-parametre optimizasyonu.</li>
+        <li><strong>Ders Projesi - Gömülü Sistemler Projesi:</strong> STM32 Nucleo üzerinde çift UART ve Timer ile periyodik veri iletimi, DAC ile analog sinyal üretimi, donanımsal tetiklemeli ADC ölçümleri; Keypad/LED ile asansör simülasyonu ve yön öncelikli sıralama algoritması.</li>
+        <li><strong>Ders Projesi - Asansör Projesi:</strong> Arayüz üzerinden referans verilen DC motorlu üç katlı asansör sisteminin kat hizasında konumlandırılması; On-Off ve PID (P, PI, PD) kontrol algoritmalarının uygulanması.</li>
+        <li><strong>ELE 371 - Sinyaller ve Sistemler Projesi:</strong> Q1.wav zaman/frekans analizi ve kadın/erkek ses bileşenleri, Q2_a.wav ve Q_2b.wav kanal bozulmalarının Butterworth filtresiyle giderilmesi, Q3.wav için vokal/gitar/bateri filtreleme ve audiowrite çıktıları.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BİLDİRİM (TOAST) KAPSAYICISI -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[60] flex flex-col gap-2 pointer-events-none no-print"></div>
+
+  <!-- VERİ VE ETKİLEŞİM BETİKLERİ -->
+  <script>
+    const PROJECTS_DATA = [
+      {
+        id: 'bitirme-projesi',
+        code: 'BİTİRME PROJESİ',
+        category: 'rf',
+        categoryLabel: 'RF & Haberleşme',
+        title: 'BİTİRME TASARIM PROJESİ (433 MHZ VERİCİ TAKİBİ & YAGİ ANTEN)',
+        subtitle: 'Raspberry Pi, MPU6050 ve RTL-SDR ile otonom aracın 433 MHz vericiyi bulup hedefe 2 dakikadan kısa sürede ulaşması.',
+        hasCode: true,
+        filename: 'rf_spectrum_direction.py',
+        language: 'Python (NumPy, Matplotlib, RTL-SDR)',
+        details: [
+          {
+            label: 'Proje Konusu ve Amacı',
+            value: 'Raspberry Pi ve MPU6050 ivme sensörü kullanılarak otonom aracın gerçek zamanlı spektrum analizi ile 433 MHz vericiyi takip edip iki dakikadan kısa sürede hedefe ulaşmasını sağlamak.'
+          },
+          {
+            label: 'Ders / Proje Kodu ve Dönem',
+            value: 'Bitirme Tasarım Projesi — TOBB ETÜ Elektrik Elektronik Mühendisliği'
+          },
+          {
+            label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
+            value: 'Raspberry Pi, MPU6050 ivme sensörü, RTL-SDR, özel tasarlanmış/üretilmiş Yagi anten, Python.'
+          },
+          {
+            label: 'Tasarım, Algoritma ve Uygulama Detayları',
+            value: 'Tüm projeye hakim olmakla beraber Yagi anten tasarımını, üretimini ve RTL-SDR bağlantılarını gerçekleştirdim; gerçek zamanlı spektrum analizi ve yön/hareket verileriyle hedef takibi kurgulandı.'
+          },
+          {
+            label: 'Sonuçlar ve Performans Değerlendirmesi',
+            value: 'Otonom aracın 433 MHz vericiyi izleyerek iki dakikadan kısa sürede hedefe ulaştığı doğrulandı.'
+          }
+        ],
+        sourceCode: `import numpy as np
+
+def compute_psd(iq_samples: np.ndarray, fs: float, nfft: int = 2048):
+    """IQ örneklerinden Hann pencereli Güç Spektral Yoğunluğu (dBFS) hesaplar."""
+    if len(iq_samples) < nfft:
+        padded = np.zeros(nfft, dtype=np.complex64)
+        padded[:len(iq_samples)] = iq_samples
+        segment = padded
+    else:
+        segment = iq_samples[:nfft]
+
+    window = np.hanning(nfft)
+    windowed = segment * window
+    scale = np.sum(window ** 2)
+
+    spectrum = np.fft.fftshift(np.fft.fft(windowed, n=nfft))
+    psd_linear = (np.abs(spectrum) ** 2) / scale
+    psd_db = 10.0 * np.log10(psd_linear + 1e-15)
+    freqs_mhz = (np.fft.fftshift(np.fft.fftfreq(nfft, d=1.0 / fs))) / 1e6
+    return freqs_mhz, psd_db
+
+def detect_peak_and_doa(freqs_mhz: np.ndarray, psd_db: np.ndarray, angles_deg: np.ndarray, rssi_db: np.ndarray):
+    """En güçlü spektral tepeyi ve RSSI/anten örüntüsünden tahmini geliş açısını (DoA) bulur."""
+    peak_idx = int(np.argmax(psd_db))
+    peak_freq_mhz = float(freqs_mhz[peak_idx])
+    peak_power_db = float(psd_db[peak_idx])
+
+    weights = 10.0 ** ((rssi_db - np.max(rssi_db)) / 10.0)
+    estimated_doa_deg = float(np.sum(angles_deg * weights) / np.sum(weights))
+    return peak_freq_mhz, peak_power_db, estimated_doa_deg
+
+if __name__ == "__main__":
+    fs = 2.4e6
+    fc_offset = 250e3
+    t = np.arange(4096) / fs
+    signal = 0.8 * np.exp(1j * 2 * np.pi * fc_offset * t) + 0.05 * (np.random.randn(len(t)) + 1j * np.random.randn(len(t)))
+    freqs, psd = compute_psd(signal, fs=fs, nfft=2048)
+    angles = np.array([-45.0, -22.5, 0.0, 22.5, 45.0])
+    rssi_samples = np.array([-56.0, -46.2, -40.5, -45.9, -55.8])
+    f_peak, p_peak, doa_deg = detect_peak_and_doa(freqs, psd, angles, rssi_samples)
+    print(f"Tepe Ofset: {f_peak:.3f} MHz | Güç: {p_peak:.2f} dB | Yön: {doa_deg:.1f} deg")`
+      },
+      {
+        id: 'mikroserit-empedans',
+        code: 'DERS PROJESİ · RF',
+        category: 'rf',
+        categoryLabel: 'RF & Haberleşme',
+        title: 'MİKROŞERİT ÇEYREK DALGA EMPEDANS DÖNÜŞTÜRÜCÜ',
+        subtitle: '1 GHz frekansında 100Ω - 50Ω uyumu için mikroşerit çeyrek dalga empedans dönüştürücü ve Ansys HFSS optimizasyonu.',
+        hasCode: true,
+        filename: 'CenkYasinProje.m',
+        language: 'MATLAB',
+        details: [
+          {
+            label: 'Proje Konusu ve Amacı',
+            value: '1 GHz frekansında 100Ω - 50Ω uyumu için mikroşerit çeyrek dalga empedans dönüştürücü tasarlamak ve maksimum güç transferi sağlamak.'
+          },
+          {
+            label: 'Ders / Proje Kodu ve Dönem',
+            value: 'Ders Projesi — Mikroşerit Çeyrek Dalga Empedans Dönüştürücü'
+          },
+          {
+            label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
+            value: 'Ansys HFSS, MATLAB, mikroşerit iletim hattı modeli.'
+          },
+          {
+            label: 'Tasarım, Algoritma ve Uygulama Detayları',
+            value: 'İletim hattı hesaplamaları Ansys HFSS simülasyonlarıyla doğrulanarak S-parametreleri optimize edildi.'
+          },
+          {
+            label: 'Sonuçlar ve Performans Değerlendirmesi',
+            value: '1 GHz merkez frekansında empedans uyumu sağlanarak maksimum güç transferi elde edildi.'
+          }
+        ],
+        sourceCode: `% CenkYasinProje.m - 1 GHz Ceyrek Dalga Empedans Donusturucu (100 Ohm -> 50 Ohm)
+clc; clear; close all;
+
+f0 = 1e9;          % Tasarim frekansi (1 GHz)
+Z0 = 50;           % Kaynak / sistem empedansi (Ohm)
+ZL = 100;          % Yuk empedansi (Ohm)
+er = 4.4;          % Alttlik bagil dielektrik sabiti
+
+% Ceyrek dalga empedans donusturucu karakteristik empedansi
+Z_qw = sqrt(Z0 * ZL);
+
+% Etkin dielektrik sabiti ve rehber dalga boyu (lambda_g)
+eef = (er + 1)/2 + ((er - 1)/2) * (1 / sqrt(1 + 12*(1.6/3.0)));
+c0 = 3e8;
+lambda_g = (c0 / f0) / sqrt(eef);
+l_qw = lambda_g / 4;
+
+fprintf('Gerekli Ceyrek Dalga Empedansi Z_qw: %.2f Ohm\\n', Z_qw);
+fprintf('Yaklasik Hat Uzunlugu (lambda_g/4): %.2f mm\\n', l_qw * 1e3);`
+      },
+      {
+        id: 'gomulu-sistemler',
+        code: 'DERS PROJESİ · STM32',
+        category: 'embedded',
+        categoryLabel: 'Gömülü Sistemler & Kontrol',
+        title: 'GÖMÜLÜ SİSTEMLER PROJESİ (STM32 NUCLEO & ASANSÖR SİMÜLASYONU)',
+        subtitle: 'Çift UART, Timer, DAC/ADC uygulamaları ve Keypad/LED ile yön öncelikli asansör simülasyonu.',
+        hasCode: true,
+        filename: 'ASANSOR.ino',
+        language: 'C / C++',
+        details: [
+          {
+            label: 'Proje Konusu ve Amacı',
+            value: 'Kısım 1: STM32 Nucleo üzerinde çift UART ve Timer kullanarak periyodik veri iletimi, DAC ile analog sinyal üretimi ve donanımsal tetiklemeli ADC ölçümleri. Kısım 2: Keypad ve LED birimleriyle asansör hareket durumlarının modellenmesi ve gidiş yönüne göre önceliklendirme.'
+          },
+          {
+            label: 'Ders / Proje Kodu ve Dönem',
+            value: 'Ders Projesi — Gömülü Sistemler Projesi'
+          },
+          {
+            label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
+            value: 'STM32 Nucleo, STM32CubeIDE, UART, Timer, DAC, ADC, Keypad, LED birimleri, Debugger.'
+          },
+          {
+            label: 'Tasarım, Algoritma ve Uygulama Detayları',
+            value: 'Periyodik veri iletimi ve tetiklemeli ADC/DAC akışı kurulmuş; kat taleplerini gidiş yönüne göre önceliklendiren akıllı sıralama algoritması geliştirilerek debugger üzerinden takip edilmiştir.'
+          },
+          {
+            label: 'Sonuçlar ve Performans Değerlendirmesi',
+            value: 'Hem donanım çevre birimi (UART/Timer/DAC/ADC) senaryoları hem de yön öncelikli asansör simülasyonu hatasız çalıştırılmıştır.'
+          }
+        ],
+        sourceCode: `// ASANSOR.ino - Kat Taleplerini Gidis Yonune Gore Onceliklendiren Kontrol Mantigi
+const int NUM_FLOORS = 4;
+const int buttonPins[NUM_FLOORS] = {2, 3, 4, 5};
+const int ledPins[NUM_FLOORS] = {6, 7, 8, 9};
+const int motorUpPin = 10;
+const int motorDownPin = 11;
+
+bool floorRequests[NUM_FLOORS] = {false, false, false, false};
+int currentFloor = 0;
+int targetFloor = -1;
+int moveDir = 0; // -1: Asagi, 0: Beklemede, 1: Yukari
+
+void setup() {
+  for (int i = 0; i < NUM_FLOORS; i++) {
+    pinMode(buttonPins[i], INPUT_PULLUP);
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW);
+  }
+  pinMode(motorUpPin, OUTPUT);
+  pinMode(motorDownPin, OUTPUT);
+  digitalWrite(motorUpPin, LOW);
+  digitalWrite(motorDownPin, LOW);
+}
+
+int selectNextTarget() {
+  if (moveDir >= 0) {
+    for (int f = currentFloor; f < NUM_FLOORS; f++) {
+      if (floorRequests[f]) return f;
+    }
+    for (int f = currentFloor - 1; f >= 0; f--) {
+      if (floorRequests[f]) return f;
+    }
+  } else {
+    for (int f = currentFloor; f >= 0; f--) {
+      if (floorRequests[f]) return f;
+    }
+    for (int f = currentFloor + 1; f < NUM_FLOORS; f++) {
+      if (floorRequests[f]) return f;
+    }
+  }
+  return -1;
+}
+
+void loop() {
+  for (int i = 0; i < NUM_FLOORS; i++) {
+    if (digitalRead(buttonPins[i]) == LOW) {
+      floorRequests[i] = true;
+      digitalWrite(ledPins[i], HIGH);
+    }
+  }
+  if (targetFloor == -1) {
+    targetFloor = selectNextTarget();
+  }
+  if (targetFloor != -1) {
+    if (currentFloor < targetFloor) {
+      moveDir = 1;
+      digitalWrite(motorDownPin, LOW);
+      digitalWrite(motorUpPin, HIGH);
+      delay(400);
+      currentFloor++;
+    } else if (currentFloor > targetFloor) {
+      moveDir = -1;
+      digitalWrite(motorUpPin, LOW);
+      digitalWrite(motorDownPin, HIGH);
+      delay(400);
+      currentFloor--;
+    } else {
+      digitalWrite(motorUpPin, LOW);
+      digitalWrite(motorDownPin, LOW);
+      floorRequests[currentFloor] = false;
+      digitalWrite(ledPins[currentFloor], LOW);
+      targetFloor = selectNextTarget();
+      if (targetFloor == -1) moveDir = 0;
+    }
+  }
+}`
+      },
+      {
+        id: 'asansor-pid',
+        code: 'DERS PROJESİ · KONTROL',
+        category: 'embedded',
+        categoryLabel: 'Gömülü Sistemler & Kontrol',
+        title: 'ASANSÖR PROJESİ (DC MOTORLU 3 KATLI KONUM & PID KONTROL)',
+        subtitle: 'Arayüz referanslı DC motorlu üç katlı asansör kabin konumlandırma ve On-Off ile P, PI, PD kontrol algoritmaları.',
+        hasCode: false,
+        details: [
+          {
+            label: 'Proje Konusu ve Amacı',
+            value: 'Bir arayüz üzerinden referans verilen DC motorlu üç katlı asansör sistemini, istenilen kat hizasında hassas bir şekilde konumlandırmak ve kabin yüksekliği kontrolünü sağlamak.'
+          },
+          {
+            label: 'Ders / Proje Kodu ve Dönem',
+            value: 'Ders Projesi — Asansör Projesi'
+          },
+          {
+            label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
+            value: 'DC motorlu üç katlı asansör düzeneği, kullanıcı arayüzü, konum geri beslemesi, On-Off ve PID (P, PI, PD) kontrol algoritmaları.'
+          },
+          {
+            label: 'Tasarım, Algoritma ve Uygulama Detayları',
+            value: 'Kabin yüksekliği kontrolünü sağlamak ve belirlenen sistem isterlerini yerine getirmek amacıyla On-Off ve PID (P, PI, PD) ailesine ait tüm kontrol algoritmaları sisteme uygulanmıştır.'
+          },
+          {
+            label: 'Sonuçlar ve Performans Değerlendirmesi',
+            value: 'Üç kat hizasında hedef konumlandırma doğruluğu ve kontrol kararlılığı karşılaştırmalı olarak değerlendirilmiştir.'
+          }
+        ]
+      },
+      {
+        id: 'ele371-sinyaller-sistemler',
+        code: 'ELE 371 · DSP',
+        category: 'dsp',
+        categoryLabel: 'Sinyal İşleme',
+        title: 'ELE 371 - SİNYALLER VE SİSTEMLER PROJESİ (FFT & BUTTERWORTH FİLTRELEME)',
+        subtitle: 'Q1.wav diyalog analizi, Q2_a/Q_2b kanal bozulmalarının giderilmesi ve Q3.wav enstrüman/vokal filtreleme uygulaması.',
+        hasCode: true,
+        filename: 'CenkYasinProje_201201061.m',
+        language: 'MATLAB',
+        details: [
+          {
+            label: 'Proje Konusu ve Amacı',
+            value: 'Q1.wav ses dosyasının zaman ve frekans uzaylarında incelenmesi ve kadın/erkek ses bileşenlerinin ayrıştırılması; Q2_a.wav ve Q_2b.wav kanallarındaki bozulmaların frekans alanında analiz edilip Butterworth filtreleriyle düzeltilmesi; Q3.wav parçasında vokal, gitar ve bateri bileşenlerinin filtrelenerek audiowrite ile kaydedilmesi.'
+          },
+          {
+            label: 'Ders / Proje Kodu ve Dönem',
+            value: 'ELE 371 - Sinyaller ve Sistemler Proje Ödevi (TOBB ETÜ)'
+          },
+          {
+            label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
+            value: 'MATLAB (audioread, fft, fftshift, butter, filter, audiowrite, subplot), Q1.wav, Q2_a.wav, Q_2b.wav, Q3.wav.'
+          },
+          {
+            label: 'Tasarım, Algoritma ve Uygulama Detayları',
+            value: 'Soru 1: Q1.wav zaman ve genlik spektrumu çizdirilip kadın (1:1*Fs) ve erkek (2:5*Fs) ses kesitleri ayrı ayrı FFT ile incelendi. Soru 2: Q2_a.wav için 1000 Hz kesim frekanslı 1. mertebe alçak geçiren Butterworth filtresi, Q_2b.wav için 250 Hz kesim frekanslı 1. mertebe alçak geçiren Butterworth filtresi uygulanarak bozuk ve düzeltilmiş spektrumlar alt alta çizdirildi. Soru 3: Q3.wav spektrumu incelenerek butter ve filter ile vokal (Q3_v.wav), gitar (Q3_g.wav) ve bateri (Q3_b.wav) sesleri ayrıştırıldı.'
+          },
+          {
+            label: 'Sonuçlar ve Performans Değerlendirmesi',
+            value: 'Kanal bozulmalarının önceki ve sonraki frekans spektrumları karşılaştırmalı olarak incelendi ve ayrıştırılan ses dosyaları audiowrite ile oluşturuldu.'
+          }
+        ],
+        sourceCode: `% CenkYasinProje_201201061.m - ELE 371 Sinyaller ve Sistemler Projesi
+clc; clear; close all;
+
+%% Soru 1: Q1.wav Zaman ve Frekans Uzayi Incelemesi
+[x, Fs] = audioread("Q1.wav");
+N = length(x);
+t = (0:N-1)/Fs;
+
+figure;
+plot(t, x);
+title("Ses Dosyasinin Zaman Alani");
+xlabel("Zaman (s)"); ylabel("Genlik");
+
+X = fftshift(abs(fft(x)));
+f = (-N/2:(N/2)-1)*(Fs/N);
+
+figure;
+plot(f, X);
+title("Ses Dosyasinin Frekans Alani");
+xlabel("Frekans (Hz)"); ylabel("|X(f)|");
+
+y = x(1:1*Fs);
+figure;
+subplot(2,1,1);
+Y = fftshift(abs(fft(y)));
+Ny = length(y);
+fy = ((-Ny/2):(Ny/2-1))*(Fs/Ny);
+plot(fy, Y);
+title("Kadin Sesinin Frekans Alani");
+
+z = x(2:min(5*Fs, N));
+subplot(2,1,2);
+Z = fftshift(abs(fft(z)));
+Nz = length(z);
+fz = ((-Nz/2):(Nz/2-1))*(Fs/Nz);
+plot(fz, Z);
+title("Erkek Sesinin Frekans Alani");
+
+%% Soru 2a: Q2_a.wav Frekans Alani ve Filtreleme
+[xa, Fsa] = audioread('Q2_a.wav');
+Na = length(xa);
+Xa = fftshift(abs(fft(xa)));
+fa = (-Na/2:Na/2-1)*(Fsa/Na);
+
+[ba, aa] = butter(1, 1000/(Fsa/2), 'low');
+filtre_xa = filter(ba, aa, xa);
+Xa_filtrelenmis = fftshift(abs(fft(filtre_xa)));
+
+figure;
+subplot(2,1,1);
+plot(fa, Xa);
+title("Bozuk Frekans Alani (Q2_a)");
+subplot(2,1,2);
+plot(fa, Xa_filtrelenmis);
+title("Duzgun Frekans Alani (Q2_a)");
+
+%% Soru 2b: Q_2b.wav Frekans Alani ve Filtreleme
+[xb, Fsb] = audioread('Q_2b.wav');
+Nb = length(xb);
+Xb = fftshift(abs(fft(xb)));
+fb = (-Nb/2:Nb/2-1)*(Fsb/Nb);
+
+[bb, ab] = butter(1, 250/(Fsb/2), 'low');
+filtre_xb = filter(bb, ab, xb);
+Xb_filtrelenmis = fftshift(abs(fft(filtre_xb)));
+
+figure;
+subplot(2,1,1);
+plot(fb, Xb);
+title("Bozuk Frekans Alani (Q_2b)");
+subplot(2,1,2);
+plot(fb, Xb_filtrelenmis);
+title("Duzgun Frekans Alani (Q_2b)");
+
+%% Soru 3: Q3.wav Frekans Analizi ve Filtreleme (Vokal, Gitar, Bateri)
+[x3, Fs3] = audioread('Q3.wav');
+x3_mono = x3(:,1);
+N3 = length(x3_mono);
+X3 = fftshift(abs(fft(x3_mono)));
+f3 = (-N3/2:N3/2-1)*(Fs3/N3);
+
+figure;
+plot(f3, X3);
+title("Frekans Alani (Q3)");
+
+[bv, av] = butter(1, [500, 650]/(Fs3/2), 'bandpass');
+vokalist_ses = filter(bv, av, x3_mono);
+audiowrite("Q3_v.wav", vokalist_ses, Fs3);
+
+[bg, ag] = butter(2, [200, 2500]/(Fs3/2), 'bandpass');
+gitar_sesi = filter(bg, ag, x3_mono);
+audiowrite("Q3_g.wav", gitar_sesi, Fs3);
+
+[bbas, abas] = butter(1, 150/(Fs3/2), 'low');
+[bzil, azil] = butter(1, 4000/(Fs3/2), 'high');
+bas_sesi = filter(bbas, abas, x3_mono);
+zil_sesi = filter(bzil, azil, x3_mono);
+bateri_sesi = bas_sesi + zil_sesi;
+audiowrite("Q3_b.wav", bateri_sesi, Fs3);`
+      }
+    ];
+
+    let activeCategory = 'all';
+    let searchQuery = '';
+    let currentModalProject = null;
+
+    function applyTheme(theme) {
+      const htmlEl = document.documentElement;
+      if (theme === 'dark') {
+        htmlEl.classList.add('dark');
+      } else {
+        htmlEl.classList.remove('dark');
+      }
+      try {
+        localStorage.setItem('cy_theme', theme);
+      } catch (_) {}
+    }
+
+    function downloadResumePDF() {
+      showToast('Kurumsal PDF / Yazdırma penceresi açılıyor...');
+      setTimeout(() => {
+        window.print();
+      }, 180);
+    }
+
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = 'px-4 py-2.5 rounded-xl bg-lacivert-900 dark:bg-bordo-800 text-white text-xs sm:text-sm font-mono shadow-xl border border-bordo-500/40 transition-all duration-300';
+      toast.textContent = message;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 2400);
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById('projects-grid');
+      const noMsg = document.getElementById('no-projects-msg');
+      if (!grid) return;
+
+      const q = searchQuery.trim().toLowerCase();
+      const filtered = PROJECTS_DATA.filter((proj) => {
+        const matchesCat = activeCategory === 'all' || proj.category === activeCategory;
+        if (!matchesCat) return false;
+        if (!q) return true;
+        const searchable = [
+          proj.code,
+          proj.title,
+          proj.subtitle,
+          proj.categoryLabel,
+          proj.filename || '',
+          ...proj.details.map((d) => `${d.label} ${d.value}`)
+        ].join(' ').toLowerCase();
+        return searchable.includes(q);
+      });
+
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        if (noMsg) noMsg.classList.remove('hidden');
+        return;
+      }
+      if (noMsg) noMsg.classList.add('hidden');
+
+      filtered.forEach((proj) => {
+        const card = document.createElement('article');
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.className = 'group p-6 rounded-2xl bg-slate-50/90 dark:bg-lacivert-900/85 border border-slate-200 dark:border-lacivert-800 hover:border-bordo-600/60 dark:hover:border-bordo-500/60 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer';
+
+        card.addEventListener('click', () => openProjectModal(proj.id));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openProjectModal(proj.id);
+          }
+        });
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-semibold bg-bordo-700/15 dark:bg-bordo-900/60 text-bordo-700 dark:text-bordo-300 border border-bordo-700/30">
+                ${proj.code}
+              </span>
+              ${proj.hasCode ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-mono bg-lacivert-900/10 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-200">Kod</span>` : ''}
+            </div>
+
+            <h3 class="text-base sm:text-lg font-bold font-sans text-lacivert-900 dark:text-white group-hover:text-bordo-700 dark:group-hover:text-bordo-400 transition-colors leading-snug">
+              ${proj.title}
+            </h3>
+
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+              ${proj.subtitle}
+            </p>
+          </div>
+
+          <div class="pt-4 mt-5 border-t border-slate-200/80 dark:border-lacivert-800 flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            <span>${proj.categoryLabel}</span>
+            <span>${proj.hasCode ? proj.filename : 'Teknik Çalışma'}</span>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function openProjectModal(projectId) {
+      const proj = PROJECTS_DATA.find((p) => p.id === projectId);
+      if (!proj) return;
+      currentModalProject = proj;
+
+      document.getElementById('modal-code-badge').textContent = proj.code;
+      document.getElementById('modal-category-badge').textContent = proj.categoryLabel;
+      document.getElementById('modal-title').textContent = proj.title;
+      document.getElementById('modal-subtitle').textContent = proj.subtitle;
+
+      const detailsPanel = document.getElementById('modal-details-panel');
+      detailsPanel.innerHTML = proj.details.map((item, idx) => `
+        <div class="modal-stagger-item p-4 rounded-xl bg-slate-50 dark:bg-lacivert-950/70 border border-slate-200 dark:border-lacivert-800">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-bordo-700 dark:text-bordo-400 mb-1">
+            ${idx + 1}. ${item.label}
+          </div>
+          <p class="text-sm text-lacivert-900 dark:text-slate-200 leading-relaxed">
+            ${item.value}
+          </p>
+        </div>
+      `).join('');
+
+      const tabsBar = document.getElementById('modal-tabs');
+      if (proj.hasCode && proj.sourceCode) {
+        tabsBar.classList.remove('hidden');
+        document.getElementById('modal-code-filename').textContent = proj.filename;
+        document.getElementById('code-header-filename').textContent = proj.filename;
+        document.getElementById('code-header-lang').textContent = `• ${proj.language}`;
+        document.getElementById('modal-code-pre').textContent = proj.sourceCode;
+      } else {
+        tabsBar.classList.add('hidden');
+      }
+
+      switchModalTab('details');
+
+      const modal = document.getElementById('project-modal');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => {
+        modal.classList.add('is-open');
+      });
+    }
+
+    function closeProjectModal() {
+      const modal = document.getElementById('project-modal');
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    function switchModalTab(tab) {
+      const detailsPanel = document.getElementById('modal-details-panel');
+      const codePanel = document.getElementById('modal-code-panel');
+      const detailsBtn = document.getElementById('tab-details-btn');
+      const codeBtn = document.getElementById('tab-code-btn');
+
+      if (tab === 'code' && currentModalProject && currentModalProject.hasCode) {
+        detailsPanel.classList.add('hidden');
+        codePanel.classList.remove('hidden');
+
+        codeBtn.className = 'px-4 py-2 text-xs sm:text-sm font-mono font-semibold rounded-t-lg border-b-2 border-bordo-600 text-bordo-700 dark:text-bordo-400 cursor-pointer';
+        detailsBtn.className = 'px-4 py-2 text-xs sm:text-sm font-mono font-medium rounded-t-lg border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-lacivert-900 dark:hover:text-white cursor-pointer';
+      } else {
+        codePanel.classList.add('hidden');
+        detailsPanel.classList.remove('hidden');
+
+        detailsBtn.className = 'px-4 py-2 text-xs sm:text-sm font-mono font-semibold rounded-t-lg border-b-2 border-bordo-600 text-bordo-700 dark:text-bordo-400 cursor-pointer';
+        codeBtn.className = 'px-4 py-2 text-xs sm:text-sm font-mono font-medium rounded-t-lg border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-lacivert-900 dark:hover:text-white cursor-pointer';
+      }
+    }
+
+    function copyProjectCode() {
+      if (!currentModalProject || !currentModalProject.sourceCode) return;
+      const tempArea = document.createElement('textarea');
+      tempArea.value = currentModalProject.sourceCode;
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(`${currentModalProject.filename} panoya kopyalandı.`);
+      } catch (_) {
+        showToast('Kopyalama sırasında bir sorun oluştu.');
+      }
+      document.body.removeChild(tempArea);
+    }
+
+    function resetProjectFilters() {
+      activeCategory = 'all';
+      searchQuery = '';
+      const searchInput = document.getElementById('project-search');
+      if (searchInput) searchInput.value = '';
+      updateFilterButtonStyles();
+      renderProjects();
+    }
+
+    function updateFilterButtonStyles() {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach((btn) => {
+        const isActive = btn.getAttribute('data-filter') === activeCategory;
+        if (isActive) {
+          btn.className = 'filter-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-medium transition-all bg-bordo-700 text-white shadow-md cursor-pointer';
+        } else {
+          btn.className = 'filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-medium transition-all bg-slate-100 dark:bg-lacivert-900 text-lacivert-900 dark:text-slate-300 border border-slate-200 dark:border-lacivert-800 hover:border-bordo-500 cursor-pointer';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const savedTheme = localStorage.getItem('cy_theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          applyTheme(savedTheme);
+        } else {
+          applyTheme('dark');
+        }
+      } catch (_) {
+        applyTheme('dark');
+      }
+
+      document.querySelectorAll('.filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.getAttribute('data-filter') || 'all';
+          updateFilterButtonStyles();
+          renderProjects();
+        });
+      });
+
+      const searchInput = document.getElementById('project-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = e.target.value || '';
+          renderProjects();
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeProjectModal();
+        }
+      });
+
+      renderProjects();
+    });
+  </script>
+</body>
+</html>
