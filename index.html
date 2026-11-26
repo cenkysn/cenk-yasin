@@ -555,9 +555,6 @@
         <div class="font-mono">
           <span class="font-bold text-bordo-700 dark:text-bordo-400">CENK YAŞIN</span> · Elektrik - Elektronik Mühendisi · Ankara
         </div>
-        <div class="font-mono text-xs">
-          RF · Haberleşme · Gömülü Sistemler · PCB &amp; Kontrol
-        </div>
       </div>
     </footer>
   </div>
@@ -572,7 +569,6 @@
         <div class="space-y-1.5">
           <div class="flex flex-wrap items-center gap-2">
             <span id="modal-code-badge" class="px-2.5 py-0.5 rounded-md text-xs font-mono font-semibold bg-bordo-700/15 dark:bg-bordo-900/70 text-bordo-700 dark:text-bordo-300 border border-bordo-700/30"></span>
-            <span id="modal-category-badge" class="px-2.5 py-0.5 rounded-md text-xs font-mono bg-lacivert-900/5 dark:bg-lacivert-800 text-lacivert-900 dark:text-slate-300"></span>
           </div>
           <h3 id="modal-title" class="text-xl sm:text-2xl font-bold font-sans text-lacivert-900 dark:text-white"></h3>
           <p id="modal-subtitle" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300"></p>
@@ -592,10 +588,10 @@
       <!-- Sekme Çubuğu (Kod içeren projelerde görünür) -->
       <div id="modal-tabs" class="hidden px-5 sm:px-6 pt-3 border-b border-slate-200 dark:border-lacivert-800 bg-slate-50/40 dark:bg-lacivert-950/30 flex items-center gap-2">
         <button id="tab-details-btn" onclick="switchModalTab('details')" class="px-4 py-2 text-xs sm:text-sm font-mono font-semibold rounded-t-lg border-b-2 border-bordo-600 text-bordo-700 dark:text-bordo-400 cursor-pointer">
-          Proje Detayları (Madde Madde)
+          Proje Detayları
         </button>
         <button id="tab-code-btn" onclick="switchModalTab('code')" class="px-4 py-2 text-xs sm:text-sm font-mono font-medium rounded-t-lg border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-lacivert-900 dark:hover:text-white cursor-pointer">
-          Kaynak Kodu (<span id="modal-code-filename"></span>)
+          Kaynak Kodu
         </button>
       </div>
 
@@ -630,8 +626,7 @@
       </div>
 
       <!-- Modal Alt Buton Çubuğu -->
-      <div class="flex items-center justify-between gap-3 px-5 sm:px-6 py-3.5 border-t border-slate-200 dark:border-lacivert-800 bg-slate-50/80 dark:bg-lacivert-950/60">
-        <span class="text-xs font-mono text-slate-500 dark:text-slate-400">ESC tuşu veya dış alana tıklayarak kapatabilirsiniz</span>
+      <div class="flex items-center justify-end gap-3 px-5 sm:px-6 py-3.5 border-t border-slate-200 dark:border-lacivert-800 bg-slate-50/80 dark:bg-lacivert-950/60">
         <button
           onclick="closeProjectModal()"
           class="px-4 py-2 rounded-xl text-xs sm:text-sm font-mono font-medium bg-lacivert-900 dark:bg-lacivert-800 hover:bg-bordo-700 text-white transition-colors cursor-pointer"
@@ -748,10 +743,6 @@
             value: 'Raspberry Pi ve MPU6050 ivme sensörü kullanılarak otonom aracın gerçek zamanlı spektrum analizi ile 433 MHz vericiyi takip edip iki dakikadan kısa sürede hedefe ulaşmasını sağlamak.'
           },
           {
-            label: 'Ders / Proje Kodu ve Dönem',
-            value: 'Bitirme Tasarım Projesi — TOBB ETÜ Elektrik Elektronik Mühendisliği'
-          },
-          {
             label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
             value: 'Raspberry Pi, MPU6050 ivme sensörü, RTL-SDR, özel tasarlanmış/üretilmiş Yagi anten, Python.'
           },
@@ -808,7 +799,7 @@ if __name__ == "__main__":
       },
       {
         id: 'mikroserit-empedans',
-        code: 'DERS PROJESİ · RF',
+        code: 'DERS PROJESİ',
         category: 'rf',
         categoryLabel: 'RF & Haberleşme',
         title: 'MİKROŞERİT ÇEYREK DALGA EMPEDANS DÖNÜŞTÜRÜCÜ',
@@ -820,10 +811,6 @@ if __name__ == "__main__":
           {
             label: 'Proje Konusu ve Amacı',
             value: '1 GHz frekansında 100Ω - 50Ω uyumu için mikroşerit çeyrek dalga empedans dönüştürücü tasarlamak ve maksimum güç transferi sağlamak.'
-          },
-          {
-            label: 'Ders / Proje Kodu ve Dönem',
-            value: 'Ders Projesi — Mikroşerit Çeyrek Dalga Empedans Dönüştürücü'
           },
           {
             label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
@@ -860,22 +847,16 @@ fprintf('Yaklasik Hat Uzunlugu (lambda_g/4): %.2f mm\\n', l_qw * 1e3);`
       },
       {
         id: 'gomulu-sistemler',
-        code: 'DERS PROJESİ · STM32',
+        code: 'DERS PROJESİ',
         category: 'embedded',
         categoryLabel: 'Gömülü Sistemler & Kontrol',
-        title: 'GÖMÜLÜ SİSTEMLER PROJESİ (STM32 NUCLEO & ASANSÖR SİMÜLASYONU)',
+        title: 'GÖMÜLÜ SİSTEMLER PROJESİ',
         subtitle: 'Çift UART, Timer, DAC/ADC uygulamaları ve Keypad/LED ile yön öncelikli asansör simülasyonu.',
-        hasCode: true,
-        filename: 'ASANSOR.ino',
-        language: 'C / C++',
+        hasCode: false,
         details: [
           {
             label: 'Proje Konusu ve Amacı',
             value: 'Kısım 1: STM32 Nucleo üzerinde çift UART ve Timer kullanarak periyodik veri iletimi, DAC ile analog sinyal üretimi ve donanımsal tetiklemeli ADC ölçümleri. Kısım 2: Keypad ve LED birimleriyle asansör hareket durumlarının modellenmesi ve gidiş yönüne göre önceliklendirme.'
-          },
-          {
-            label: 'Ders / Proje Kodu ve Dönem',
-            value: 'Ders Projesi — Gömülü Sistemler Projesi'
           },
           {
             label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
@@ -889,104 +870,26 @@ fprintf('Yaklasik Hat Uzunlugu (lambda_g/4): %.2f mm\\n', l_qw * 1e3);`
             label: 'Sonuçlar ve Performans Değerlendirmesi',
             value: 'Hem donanım çevre birimi (UART/Timer/DAC/ADC) senaryoları hem de yön öncelikli asansör simülasyonu hatasız çalıştırılmıştır.'
           }
-        ],
-        sourceCode: `// ASANSOR.ino - Kat Taleplerini Gidis Yonune Gore Onceliklendiren Kontrol Mantigi
-const int NUM_FLOORS = 4;
-const int buttonPins[NUM_FLOORS] = {2, 3, 4, 5};
-const int ledPins[NUM_FLOORS] = {6, 7, 8, 9};
-const int motorUpPin = 10;
-const int motorDownPin = 11;
-
-bool floorRequests[NUM_FLOORS] = {false, false, false, false};
-int currentFloor = 0;
-int targetFloor = -1;
-int moveDir = 0; // -1: Asagi, 0: Beklemede, 1: Yukari
-
-void setup() {
-  for (int i = 0; i < NUM_FLOORS; i++) {
-    pinMode(buttonPins[i], INPUT_PULLUP);
-    pinMode(ledPins[i], OUTPUT);
-    digitalWrite(ledPins[i], LOW);
-  }
-  pinMode(motorUpPin, OUTPUT);
-  pinMode(motorDownPin, OUTPUT);
-  digitalWrite(motorUpPin, LOW);
-  digitalWrite(motorDownPin, LOW);
-}
-
-int selectNextTarget() {
-  if (moveDir >= 0) {
-    for (int f = currentFloor; f < NUM_FLOORS; f++) {
-      if (floorRequests[f]) return f;
-    }
-    for (int f = currentFloor - 1; f >= 0; f--) {
-      if (floorRequests[f]) return f;
-    }
-  } else {
-    for (int f = currentFloor; f >= 0; f--) {
-      if (floorRequests[f]) return f;
-    }
-    for (int f = currentFloor + 1; f < NUM_FLOORS; f++) {
-      if (floorRequests[f]) return f;
-    }
-  }
-  return -1;
-}
-
-void loop() {
-  for (int i = 0; i < NUM_FLOORS; i++) {
-    if (digitalRead(buttonPins[i]) == LOW) {
-      floorRequests[i] = true;
-      digitalWrite(ledPins[i], HIGH);
-    }
-  }
-  if (targetFloor == -1) {
-    targetFloor = selectNextTarget();
-  }
-  if (targetFloor != -1) {
-    if (currentFloor < targetFloor) {
-      moveDir = 1;
-      digitalWrite(motorDownPin, LOW);
-      digitalWrite(motorUpPin, HIGH);
-      delay(400);
-      currentFloor++;
-    } else if (currentFloor > targetFloor) {
-      moveDir = -1;
-      digitalWrite(motorUpPin, LOW);
-      digitalWrite(motorDownPin, HIGH);
-      delay(400);
-      currentFloor--;
-    } else {
-      digitalWrite(motorUpPin, LOW);
-      digitalWrite(motorDownPin, LOW);
-      floorRequests[currentFloor] = false;
-      digitalWrite(ledPins[currentFloor], LOW);
-      targetFloor = selectNextTarget();
-      if (targetFloor == -1) moveDir = 0;
-    }
-  }
-}`
+        ]
       },
       {
         id: 'asansor-pid',
-        code: 'DERS PROJESİ · KONTROL',
+        code: 'DERS PROJESİ',
         category: 'embedded',
         categoryLabel: 'Gömülü Sistemler & Kontrol',
-        title: 'ASANSÖR PROJESİ (DC MOTORLU 3 KATLI KONUM & PID KONTROL)',
+        title: 'ASANSÖR PROJESİ',
         subtitle: 'Arayüz referanslı DC motorlu üç katlı asansör kabin konumlandırma ve On-Off ile P, PI, PD kontrol algoritmaları.',
-        hasCode: false,
+        hasCode: true,
+        filename: 'ASANSOR.ino',
+        language: 'Arduino (C / C++)',
         details: [
           {
             label: 'Proje Konusu ve Amacı',
             value: 'Bir arayüz üzerinden referans verilen DC motorlu üç katlı asansör sistemini, istenilen kat hizasında hassas bir şekilde konumlandırmak ve kabin yüksekliği kontrolünü sağlamak.'
           },
           {
-            label: 'Ders / Proje Kodu ve Dönem',
-            value: 'Ders Projesi — Asansör Projesi'
-          },
-          {
             label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
-            value: 'DC motorlu üç katlı asansör düzeneği, kullanıcı arayüzü, konum geri beslemesi, On-Off ve PID (P, PI, PD) kontrol algoritmaları.'
+            value: 'DC motorlu üç katlı asansör düzeneği, HC-SR04 ultrasonik mesafe sensörü, PWM motor sürücü, seri arayüz, On-Off ve PID (P, PI, PD) kontrol algoritmaları.'
           },
           {
             label: 'Tasarım, Algoritma ve Uygulama Detayları',
@@ -994,16 +897,212 @@ void loop() {
           },
           {
             label: 'Sonuçlar ve Performans Değerlendirmesi',
-            value: 'Üç kat hizasında hedef konumlandırma doğruluğu ve kontrol kararlılığı karşılaştırmalı olarak değerlendirilmiştir.'
+            value: 'Üç kat hizasında (10 cm, 40 cm, 70 cm) hedef konumlandırma doğruluğu ve kontrol kararlılığı karşılaştırmalı olarak değerlendirilmiştir.'
           }
-        ]
+        ],
+        sourceCode: `const int TRIG_PIN = 9;   // TRIG pini
+const int ECHO_PIN = 10;  // ECHO pini
+const int R_PWM = 3;      // Sağ PWM pini
+const int L_PWM = 5;      // Sol PWM pini
+
+int i_kat = 1;            // girilecek kat değişkeni
+int hedef_mesafe;         // Hedef kat yüksekliği
+const int esik = 3;       // Eşik değer (±3 cm) genişletildi
+
+bool hedefe_ulasildi = false;  // Motor durumu 
+int kontrol_turu = 1;          // Varsayılan kontrol türü (1: On-Off)
+float integral = 0;            // PI ve PID için integral terimi
+int previousError = 0;         // PD ve PID için önceki hata değeri
+
+void setup() {
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(R_PWM, OUTPUT);
+  pinMode(L_PWM, OUTPUT);
+
+  Serial.begin(9600);
+  Serial.println("Hangi kontrol turunu kullanmak istiyorsunuz? (1: On-Off, 2: P, 3: PI, 4: PID, 5: PD): ");
+  while (true) {
+    if (Serial.available() > 0) {
+      kontrol_turu = Serial.parseInt();
+      while (Serial.available()) Serial.read(); // belleği temizler 
+      if (kontrol_turu >= 1 && kontrol_turu <= 4) {
+        break;
+      } else {
+        Serial.println("Gecersiz kontrol turu! Lutfen 1, 2, 3 veya 4 giriniz: ");
+      }
+    }
+  }
+
+  Serial.println("Hangi kata gitmek istiyorsunuz? (1, 2, 3): ");
+  hedefe_ulasildi = false;
+  hedef_mesafe = 10;  // katı default olarak 1' e ayarlar
+}
+
+void stop() {
+  digitalWrite(R_PWM, LOW);
+  digitalWrite(L_PWM, LOW);
+  hedefe_ulasildi = true; // Hedefe ulaşıldı 
+  Serial.println("Motor durduruldu!");
+}
+
+int olc() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  long sure = pulseIn(ECHO_PIN, HIGH);
+  return sure * 0.0343 / 2;  // Ölçülen mesafe cm cinsinden döndür
+}
+
+void onOffControl(int error) {
+  if (error > esik) {
+    Serial.println("Asansör aşağı iniyor...");
+    digitalWrite(L_PWM, LOW);
+    digitalWrite(R_PWM, HIGH);
+  } else if (error < -esik) {
+    Serial.println("Asansör yukarı çıkıyor...");
+    digitalWrite(L_PWM, HIGH);
+    digitalWrite(R_PWM, LOW);
+  } else {
+    stop();
+    Serial.println("Hedef kata ulaşıldı!");
+  }
+}
+
+void pControl(int error) {
+  int motorPower = constrain(abs(error) * 2, 0, 255); // Kp = 2
+  if (error > 0) {
+    Serial.println("Asansör aşağı iniyor...");
+    analogWrite(R_PWM, motorPower);
+    digitalWrite(L_PWM, LOW);
+  } else {
+    Serial.println("Asansör yukarı çıkıyor...");
+    analogWrite(L_PWM, motorPower);
+    digitalWrite(R_PWM, LOW);
+  }
+  if (abs(error) <= esik) {
+    stop();
+    Serial.println("Hedef kata ulaşıldı!");
+  }
+}
+
+void piControl(int error) {
+  integral += error;
+  int motorPower = constrain((error * 2) + (integral * 0.5), 0, 255); // Kp=2, Ki=0.5
+  if (error > 0) {
+    Serial.println("Asansör aşağı iniyor...");
+    analogWrite(R_PWM, motorPower);
+    digitalWrite(L_PWM, LOW);
+  } else {
+    Serial.println("Asansör yukarı çıkıyor...");
+    analogWrite(L_PWM, motorPower);
+    digitalWrite(R_PWM, LOW);
+  }
+  if (abs(error) <= esik) {
+    stop();
+    Serial.println("Hedef kata ulaşıldı!");
+  }
+}
+
+void pidControl(int error) {
+  int derivative = error - previousError;
+  integral += error;
+  int motorPower = constrain((error * 2) + (integral * 0.5) + (derivative * 1), 0, 255); // Kp=2, Ki=0.5, Kd=1
+  previousError = error;
+  if (error > 0) {
+    Serial.println("Asansör aşağı iniyor...");
+    analogWrite(R_PWM, motorPower);
+    digitalWrite(L_PWM, LOW);
+  } else {
+    Serial.println("Asansör yukarı çıkıyor...");
+    analogWrite(L_PWM, motorPower);
+    digitalWrite(R_PWM, LOW);
+  }
+  if (abs(error) <= esik) {
+    stop();
+    Serial.println("Hedef kata ulaşıldı!");
+  }
+}
+
+void pdControl(int error) {
+  int derivative = error - previousError;  // Hata değişim hızını hesapla
+  int motorPower = constrain((error * 2) + (derivative * 1), 0, 255); // Kp=2, Kd=1
+  previousError = error;  // Bir sonraki döngü için mevcut hatayı sakla
+
+  if (error > 0) {
+    Serial.println("Asansör aşağı iniyor...");
+    analogWrite(R_PWM, motorPower);
+    digitalWrite(L_PWM, LOW);
+  } else {
+    Serial.println("Asansör yukarı çıkıyor...");
+    analogWrite(L_PWM, motorPower);
+    digitalWrite(R_PWM, LOW);
+  }
+
+  if (abs(error) <= esik) {
+    stop();
+    Serial.println("Hedef kata ulaşıldı!");
+  }
+}
+
+void loop() {
+  int simdiki_mesafe = olc();  // Sensörden mesafe ölçümü
+  Serial.print("Simdiki Mesafe: ");
+  Serial.println(simdiki_mesafe);
+
+  if (!hedefe_ulasildi) {
+    int error = hedef_mesafe - simdiki_mesafe;
+    switch (kontrol_turu) {
+      case 1:
+        onOffControl(error);
+        break;
+      case 2:
+        pControl(error);
+        break;
+      case 3:
+        piControl(error);
+        break;
+      case 4:
+        pidControl(error);
+        break;
+      case 5:
+        pdControl(error);
+        break;
+    }
+  }
+
+  // yeni giriş alınır
+  if (hedefe_ulasildi) {
+    Serial.println("Yeni kat seciniz (1, 2, 3): ");
+    while (true) {
+      if (Serial.available() > 0) {
+        i_kat = Serial.parseInt();
+        while (Serial.available()) Serial.read(); //bellek temizle
+        if (i_kat >= 1 && i_kat <= 3) {
+          hedef_mesafe = (i_kat == 1) ? 10 : (i_kat == 2) ? 40 : (i_kat == 3) ? 70 : 0;
+          hedefe_ulasildi = false; // Yeni hedef belirlendi
+          integral = 0;           // PI ve PID için integral sıfırlanır
+          previousError = 0;      // PID için hata sıfırlanır
+          break;
+        } else {
+          Serial.println("Gecersiz kat! Lutfen 1, 2 veya 3 giriniz: ");
+        }
+      }
+    }
+  }
+
+  delay(100); //  kısa bir bekleme
+}`
       },
       {
         id: 'ele371-sinyaller-sistemler',
-        code: 'ELE 371 · DSP',
+        code: 'DERS PROJESİ',
         category: 'dsp',
         categoryLabel: 'Sinyal İşleme',
-        title: 'ELE 371 - SİNYALLER VE SİSTEMLER PROJESİ (FFT & BUTTERWORTH FİLTRELEME)',
+        title: 'ELE 371 - SİNYALLER VE SİSTEMLER PROJESİ',
         subtitle: 'Q1.wav diyalog analizi, Q2_a/Q_2b kanal bozulmalarının giderilmesi ve Q3.wav enstrüman/vokal filtreleme uygulaması.',
         hasCode: true,
         filename: 'CenkYasinProje_201201061.m',
@@ -1012,10 +1111,6 @@ void loop() {
           {
             label: 'Proje Konusu ve Amacı',
             value: 'Q1.wav ses dosyasının zaman ve frekans uzaylarında incelenmesi ve kadın/erkek ses bileşenlerinin ayrıştırılması; Q2_a.wav ve Q_2b.wav kanallarındaki bozulmaların frekans alanında analiz edilip Butterworth filtreleriyle düzeltilmesi; Q3.wav parçasında vokal, gitar ve bateri bileşenlerinin filtrelenerek audiowrite ile kaydedilmesi.'
-          },
-          {
-            label: 'Ders / Proje Kodu ve Dönem',
-            value: 'ELE 371 - Sinyaller ve Sistemler Proje Ödevi (TOBB ETÜ)'
           },
           {
             label: 'Kullanılan Donanım, Yazılım ve Bileşenler',
@@ -1248,7 +1343,6 @@ audiowrite("Q3_b.wav", bateri_sesi, Fs3);`
       currentModalProject = proj;
 
       document.getElementById('modal-code-badge').textContent = proj.code;
-      document.getElementById('modal-category-badge').textContent = proj.categoryLabel;
       document.getElementById('modal-title').textContent = proj.title;
       document.getElementById('modal-subtitle').textContent = proj.subtitle;
 
@@ -1267,7 +1361,6 @@ audiowrite("Q3_b.wav", bateri_sesi, Fs3);`
       const tabsBar = document.getElementById('modal-tabs');
       if (proj.hasCode && proj.sourceCode) {
         tabsBar.classList.remove('hidden');
-        document.getElementById('modal-code-filename').textContent = proj.filename;
         document.getElementById('code-header-filename').textContent = proj.filename;
         document.getElementById('code-header-lang').textContent = `• ${proj.language}`;
         document.getElementById('modal-code-pre').textContent = proj.sourceCode;
